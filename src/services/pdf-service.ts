@@ -9,6 +9,7 @@ export async function getTextFromPDFService(url: string) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.SECRET_KEY}`,
       },
       body: JSON.stringify({ url }),
     });
