@@ -14,17 +14,20 @@ quizRouter.post("/generate-quiz", authMiddleware, async (c) => {
       return c.json({ error: "URL and type are required" }, 400);
     }
 
-    // Respond immediately to prevent timeout
+    // For asynchronous processing with callback
     if (callbackUrl) {
-      c.executionCtx.waitUntil(
-        processQuizWithCallback(url, type, callbackUrl, quizId)
+      // Start the process in the background without waiting
+      // Using Node.js-friendly approach instead of executionCtx.waitUntil
+      processQuizWithCallback(url, type, callbackUrl, quizId).catch((err) =>
+        console.error("Background processing failed:", err)
       );
+
       return c.json(
         { accepted: true, message: "Quiz generation started" },
         202
       );
     } else {
-      // Fallback to synchronous processing for backward compatibility
+      // Synchronous processing (wait for result)
       const result = await processQuizSync(url, type);
       return c.json(result);
     }
