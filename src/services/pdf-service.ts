@@ -1,9 +1,10 @@
 export async function getTextFromPDFService(url: string) {
   const PDF_SERVICE_URL =
-    process.env.PDF_SERVICE_URL || "http://localhost:3001/api/v1/extract";
+    process.env.PDF_SERVICE_URL ||
+    "https://xyen-pdf-service.onrender.com/api/v1/extract";
 
   try {
-    console.log("Calling PDF service for:", url);
+    console.log(`Calling PDF service ${PDF_SERVICE_URL} for:`, url);
     const response = await fetch(PDF_SERVICE_URL, {
       method: "POST",
       headers: {
@@ -22,7 +23,7 @@ export async function getTextFromPDFService(url: string) {
     const data = await response.json();
 
     if (!data.success || !data.text) {
-      throw new Error("PDF service returned an error");
+      throw new Error(`PDF service ${PDF_SERVICE_URL} returned an error`);
     }
 
     console.log(`Successfully extracted ${data.textLength} characters of text`);
