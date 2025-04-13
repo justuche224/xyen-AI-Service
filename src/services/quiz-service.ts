@@ -9,7 +9,7 @@ export async function generateQuiz(text: string, type: string) {
   });
 
   const response = await openai.chat.completions.create({
-    model: "gemini-2.0-pro-exp-02-05",
+    model: "gemini-2.5-pro-exp-03-25",
     messages: [
       {
         role: "system",
